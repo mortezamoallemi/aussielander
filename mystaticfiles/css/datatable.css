@@ -1,0 +1,11 @@
+@charset "utf-8";
+body{
+    font-family: arial;
+}
+.link{
+    color: #4267B2;
+    text-decoration: none;
+}
+.link:hover{
+  color: #000000;    
+}
