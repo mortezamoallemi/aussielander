@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.template import loader
 import pandas as pd
+import os
 import sqlite3
 
 # Create your views here.
@@ -11,7 +12,8 @@ def main(request):
 def population_view(request):
   REGION_NAME_EXPANDED = request.GET.get('region')
   
-  con = sqlite3.connect("C:/Users/mmoallem/Downloads/Aussielander/Data Preparation/output/abs_census.sqlite")
+  BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+  con = sqlite3.connect(os.path.join(BASE_DIR, "data/abs_census.sqlite"))
     
   region_metadata = pd.read_sql_query(sql = "SELECT * from regions_list WHERE REGION_NAME_EXPANDED = ?", \
   con = con, \
