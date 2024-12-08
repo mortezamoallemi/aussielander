@@ -1,0 +1,83 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}
+  {{ region }} - Population 
+{% endblock %}
+
+
+{% block content %}
+   
+	  <!-- body code goes here -->
+<div class="sectionmiddle">
+		<div class="datasection" id="address-bar">
+  <div class="address"> 
+	  <!--search bar-->
+<form method="get" action="." id="search-form">
+            <div class="form-group">
+                <select name="region" id="region" class="form-control">
+                    <option value=""> Select a region </option>
+                    {% for value, label in form.region.field.choices %}
+                        <option value="{{ value }}" {% if value == selected_option %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+		
+		<!-- JavaScript to update URL based on search dynamically -->
+    <script>
+        document.querySelector('#region').addEventListener('change', function () {
+            const selectedValue = this.value;
+            const url = new URL(window.location);
+            url.searchParams.set('region', selectedValue);
+            window.location.href = url.toString();
+        });
+    </script>
+	
+    </div>
+			</div>
+	<div class="regionname" id="region-name"> 
+		<!--regionname--> 
+		<h1>
+{{ region_name }}
+		</h1>
+	</div> 
+	  
+	<div class="datasection" id="live-population">
+	<h2>Live Population Counter:</h2>
+		<!--Load Live Counters-->
+		<div class="livepop">
+			{{ population_live }}
+			</div>
+		<!--live population text-->
+<p> <strong>{{ region_name }}</strong> is located in <strong>{{ region_state }}</strong> and considered as a state. The population of <strong>{{ region_name }}</strong> is collected during censuses, every five years. In the last census in <strong>2021</strong>, <strong>{{ region_name }}</strong> had a population of <strong>{{ population_21 }}</strong> persons. The live population is calculated using growth rate between 2016 and 2021 and national adjustments after 2021.</p>
+
+	</div>
+
+	<div id="plotly-graph"></div>
+			<script>
+        const graphJSON = {{ population_graph|safe }};
+        const graphDiv = document.getElementById('plotly-graph');
+        Plotly.newPlot(graphDiv, graphJSON.data, graphJSON.layout);
+    </script>
+
+	<div class="datasection" id="interactive-map" >
+	<h2>Map:</h2>
+		<!--region area-->
+<p><strong>{{ region_name }}</strong> has an area of <strong> {{region_area}} km<sup>2</sup></strong>, which provides a population density of <strong>{{population_density}} </strong>persons in each square kilometre. Below map presents the area and borders of <strong>{{ region_name }}</strong>.</p>
+	<!--interactive map-->
+
+		</div>
+<div class="datasection" id="neighbours">
+	  <h2>Neighbours:</h2>
+	<!--regions table-->
+	<p><strong>Australia</strong> includes 8 states and territories. The table below shows the population in <strong>2016</strong>. Click on each region to see the live population and related cities and sububrs.</p>
+	<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;" > <thead> <tr> <th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: left;">Region</th> <th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;">Area (km<sup>2</sup>)</th> <th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;">Population</th> </tr> </thead> </table>
+
+			</div>
+
+
+
+{% endblock %}
