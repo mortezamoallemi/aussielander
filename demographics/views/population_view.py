@@ -21,6 +21,7 @@ def population_view(request):
   con = con, \
   params=(REGION_NAME_EXPANDED,))
   
+  region_type = region_metadata.loc[0,'REGION_TYPE']
   region_code = region_metadata.loc[0,'REGION_CODE21']
   region_name = region_metadata.loc[0,'REGION_NAME21']
   region_area = region_metadata.loc[0,'AREASQKM21']
@@ -32,7 +33,7 @@ def population_view(request):
   params=(region_code,))
   population_21 = population_21.loc[0,'VALUE']
 
-  population_livee = population_live(region_code)
+  population_livee = population_live(region_type, region_code)
 
   population_density = ('{:,.1f}'.format(population_21/region_area))
   region_area = ('{:,.0f}'.format(region_area))
@@ -46,7 +47,7 @@ def population_view(request):
 
 
   # Generate the Plotly graph for the given region_code
-  population_fig = population_graph(region_code, region_name)
+  population_fig = population_graph(region_type, region_code, region_name)
   # Convert the Plotly figure to JSON for rendering
   population_fig_json = population_fig.to_json()
     

@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 from datetime import datetime, date
 from demographics.utils.population_live import population_live
 
-def population_graph(region_code, region_name):
+def population_graph(region_type, region_code, region_name):
     # Connect to the database
     BASE_DIR = Path(__file__).resolve().parent.parent.parent
     con = sqlite3.connect(os.path.join(BASE_DIR, "data/abs_census.sqlite"))
@@ -15,7 +15,8 @@ def population_graph(region_code, region_name):
     query = f"""
     SELECT Date, POPULATION
     FROM population_growth_rates
-    WHERE REGION_CODE21 = {region_code}
+    WHERE REGION_CODE21 = '{region_code}'
+    AND REGION_TYPE = '{region_type}'
     """
     result_ts = pd.read_sql_query(query, con)
     
@@ -26,7 +27,7 @@ def population_graph(region_code, region_name):
     result_ts['Date'] = pd.to_datetime(result_ts['Date'])
     
     # Get the live population    
-    result_live = population_live(region_code)
+    result_live = population_live(region_type, region_code)
     
     # Create a Plotly graph
     fig = go.Figure()

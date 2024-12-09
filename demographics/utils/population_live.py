@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 from datetime import datetime, date
 
-def population_live(region_code):
+def population_live(region_type, region_code):
 
     # Connect to the SQLite database
     BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -14,8 +14,9 @@ def population_live(region_code):
     query = f"""
     SELECT *
     FROM population_growth_rates
-    WHERE REGION_CODE21 = {region_code}
-      AND Date >= CURRENT_TIMESTAMP
+    WHERE REGION_CODE21 = '{region_code}'
+    AND REGION_TYPE = '{region_type}'
+    AND Date >= CURRENT_TIMESTAMP
     ORDER BY Date ASC
     LIMIT 1;
     """
