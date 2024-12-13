@@ -54,7 +54,7 @@ def population_view(request):
   template = loader.get_template('demographics.html')
   context = {
     'region_name': region_name,
-    'region_name': region_name,
+    'region_type': region_type,
     'region_area': region_area,
     'region_state': region_state,
     'population_21' : population_21,
